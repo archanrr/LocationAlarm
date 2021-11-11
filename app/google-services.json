@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "230254200115",
+    "project_id": "locationalarm-5591b",
+    "storage_bucket": "locationalarm-5591b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230254200115:android:f6b15652bf064f240aea46",
+        "android_client_info": {
+          "package_name": "com.example.locationalarm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230254200115-9hl5pr4fop8j9m85sffectk6df3l5bn4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs3C3_3RlN-NkA9b8Q7K_wHGbvTvZN0js"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "230254200115-9hl5pr4fop8j9m85sffectk6df3l5bn4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
