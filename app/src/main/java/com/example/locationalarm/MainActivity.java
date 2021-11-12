@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AlarmViewListener{
 
-    FragmentTransaction fragmentTransaction;
     RecyclerView recyclerView;
     FloatingActionButton fabAddAlarm,fabRefreshAlarm;
     ListAdapter listAdapter;
