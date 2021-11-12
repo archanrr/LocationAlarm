@@ -46,9 +46,7 @@ public class MainActivity extends AppCompatActivity implements AlarmViewListener
     public void setupObservers() {
         alarmViewModel.getAlarmDetails().observe(this, alarmDetails -> {
             alarms.clear();
-            alarms.addAll(alarmDetails);
-            //Toast.makeText(MainActivity.this, "alarmDetails----->"+alarmDetails, Toast.LENGTH_SHORT).show();
-            listAdapter.notifyDataSetChanged();
+            alarms.addAll(alarmDetails);listAdapter.notifyDataSetChanged();
         });
     }
 
