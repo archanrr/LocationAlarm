@@ -2,11 +2,11 @@ package com.example.locationalarm.Algorithm;
 
 import java.util.ArrayList;
 
-class Coordinate{
+public class Coordinate{
     double lat,lon;
     double distance = Double.MAX_VALUE;
     ArrayList<Coordinate> nearbyList;
-    Coordinate(double lat,double lon){
+    public Coordinate(double lat, double lon){
         this.lat = lat;
         this.lon = lon;
         this.left = null;

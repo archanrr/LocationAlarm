@@ -2,79 +2,80 @@ package com.example.locationalarm;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.locationalarm.DatabaseOperations.AlarmDetails;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements DataLoadListener {
+public class MainActivity extends AppCompatActivity implements AlarmViewListener{
 
     FragmentTransaction fragmentTransaction;
     RecyclerView recyclerView;
+    FloatingActionButton fabAddAlarm,fabRefreshAlarm;
     ListAdapter listAdapter;
     AlarmViewModel alarmViewModel;
+    ArrayList<AlarmDetails> alarms = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.framelayout,new AlarmFragment());
-        fragmentTransaction.commit();
+        setContentView(R.layout.fragment_alarms);
+        initView();
+        setListeners();
+        setupObservers();
+        alarmViewModel.getAlarms();
+    }
 
-        /*recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    public void initView() {
+        recyclerView = findViewById(R.id.recycler_view);
+        fabAddAlarm = findViewById(R.id.fab_new_alarm);
+        fabRefreshAlarm = findViewById(R.id.fab_refresh);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-         */
         alarmViewModel = new ViewModelProvider(MainActivity.this).get(AlarmViewModel.class);
-        alarmViewModel.init(MainActivity.this);
-        alarmViewModel.getAlarmDetails().observe(this, new Observer<ArrayList<AlarmDetails>>() {
-            @Override
-            public void onChanged(ArrayList<AlarmDetails> alarmDetails) {
-                startPrintLog(alarmDetails);
-                Toast.makeText(MainActivity.this, "alarmDetails----->"+alarmDetails, Toast.LENGTH_SHORT).show();
-                listAdapter.notifyDataSetChanged();
-            }
+        listAdapter = new ListAdapter(alarms, this);
+        recyclerView.setAdapter(listAdapter);
+    }
+
+    public void setupObservers() {
+        alarmViewModel.getAlarmDetails().observe(this, alarmDetails -> {
+            alarms.clear();
+            alarms.addAll(alarmDetails);
+            //Toast.makeText(MainActivity.this, "alarmDetails----->"+alarmDetails, Toast.LENGTH_SHORT).show();
+            listAdapter.notifyDataSetChanged();
         });
-
-        listAdapter = new ListAdapter(alarmViewModel.getAlarmDetails().getValue());
-
-        //recyclerView.setAdapter(listAdapter);
-
     }
-    public void listAlarms(View v){
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.framelayout,new AlarmFragment());
-        fragmentTransaction.commit();
-    }
-    void startPrintLog(ArrayList<AlarmDetails> alarmDetails){
-        Log.d("Archan","size"+alarmDetails.size());
-        for(int i=0;i<alarmDetails.size();i++) {
-            Log.d("Archan",""+alarmDetails.get(i).getLat());
-            Log.d("Archan",""+alarmDetails.get(i).getLon());
-            Log.d("Archan",""+alarmDetails.get(i).getReason());
-        }
-        Toast.makeText(this, " reason"+alarmDetails, Toast.LENGTH_SHORT).show();
+
+    public void setListeners() {
+        fabAddAlarm.setOnClickListener(v -> {
+            Intent intent = new Intent(this,AddAlarmActivity.class);
+            startActivity(intent);
+        });
+        fabRefreshAlarm.setOnClickListener(v -> {
+            onRefreshClick();
+        });
     }
 
     @Override
-    public void onDataLoaded() {
-        alarmViewModel.getAlarmDetails().observe(this, new Observer<ArrayList<AlarmDetails>>() {
-            @Override
-            public void onChanged(ArrayList<AlarmDetails> alarmDetails) {
-                startPrintLog(alarmDetails);
-                Toast.makeText(MainActivity.this, "alarmDetails"+alarmDetails, Toast.LENGTH_SHORT).show();
-                listAdapter.notifyDataSetChanged();
-            }
-        });
+    public void onAlarmClick(AlarmDetails alarmDetails, Integer position) {
+
+    }
+
+    @Override
+    public void onCancelClick(AlarmDetails alarmDetails, Integer position) {
+        alarmViewModel.cancelAlarm(alarmDetails.getKey());
+        onRefreshClick();
+    }
+
+    @Override
+    public void onRefreshClick() {
+        alarmViewModel.refreshScreen();
     }
 }

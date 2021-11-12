@@ -15,7 +15,8 @@ public class MapApi{
         double d = R * c; // Distance in km
         return d;
     }
-    public static double deg2rad(double lat1) {
+    private static double deg2rad(double lat1) {
         return lat1 * (Math.PI/180);
     }
+
 }

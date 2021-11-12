@@ -1,31 +1,42 @@
 package com.example.locationalarm.Algorithm;
+
+import com.example.locationalarm.DatabaseOperations.AlarmDetails;
+
 //To Store the Coordinates as Tree based on Distance Still working on.
 // this algo is based on algorithm.
 public class BinaryTree {
+    public void setRoot(Coordinate root) {
+        this.root = root;
+    }
+
+    public static void setMinDistance(int minDistance) {
+        BinaryTree.minDistance = minDistance;
+    }
+
     Coordinate root;
     static int minDistance = 5;
-    void InsertData(Coordinate root,Coordinate newCoordinate) {
-        if(root == null) {
+    public void InsertData(AlarmDetails root, Coordinate newCoordinate) {
+        if(this.root == null) {
             return;
         }
-        Coordinate head = root;
+        Coordinate head = this.root;
         Coordinate curr = head;
         double distance = 0;
         while(head!=null) {
             curr = head;
             //Checking the difference between current root and new Coordinate.
-            distance = MapApi.getDistanceFromLatLonInKm(newCoordinate.lat, newCoordinate.lon,root.lat, root.lon);
+            distance = MapApi.getDistanceFromLatLonInKm(newCoordinate.lat, newCoordinate.lon, this.root.lat, this.root.lon);
             //Checking the distance are in range ir less than 0.5KM
             // if so add the new coordinate to nearby list to this point.
             //to Searching time will drastically reduced
             if(distance <= minDistance) {
                 System.out.println("distance minimum"+distance);
-                root.nearbyList.add(newCoordinate);
+                this.root.nearbyList.add(newCoordinate);
                 return;
             }
             // If new coordinate is not in range defines,
             // add it as new node in tree with distance between smallest node in tree.
-            if(distance > root.distance) {
+            if(distance > this.root.distance) {
                 System.out.println("distance left"+distance);
                 head = head.right;
             } else {
@@ -42,7 +53,7 @@ public class BinaryTree {
         }
     }
 
-    void printData( Coordinate root) {
+    public void printData( Coordinate root) {
         if(root == null) {
             return;
         }
