@@ -1,17 +1,21 @@
 package com.example.locationalarm.DatabaseOperations;
 
-import com.example.locationalarm.AlarmViewModel;
-
 public class AlarmDetails {
+    String key;
     double lat,lon;
     String Reason;
-    AlarmDetails(double lat,double lon,String reason){
+    AlarmDetails(String key, double lat,double lon,String reason){
+        this.key = key;
         this.lat = lat;
         this.lon = lon;
         this.Reason = reason;
     }
     AlarmDetails(){
 
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public double getLat() {
@@ -36,5 +40,9 @@ public class AlarmDetails {
 
     public void setReason(String reason) {
         Reason = reason;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

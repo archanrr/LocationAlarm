@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/ireason"
@@ -30,6 +30,11 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/image_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_cancel_24"/>
     </LinearLayout>
 
 </LinearLayout>

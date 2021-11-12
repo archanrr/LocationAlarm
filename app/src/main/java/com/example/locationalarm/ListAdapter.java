@@ -3,6 +3,7 @@ package com.example.locationalarm;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,8 +17,13 @@ import java.util.ArrayList;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private ArrayList<AlarmDetails> alarmModels = new ArrayList<>();
-    public ListAdapter(ArrayList<AlarmDetails> alarmModels){
+    private AlarmViewListener alarmViewListener;
+    public ListAdapter(
+            ArrayList<AlarmDetails> alarmModels,
+            AlarmViewListener alarmViewListener
+    ){
         this.alarmModels = alarmModels;
+        this.alarmViewListener = alarmViewListener;
     }
     @NonNull
     @NotNull
@@ -30,9 +36,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull @NotNull ListAdapter.ViewHolder holder, int position) {
         holder.itemView.setTag(alarmModels.get(position));
-        //holder.lat.setText((int)alarmModels.get(position).getLat());
-        //holder.lon.setText((int )alarmModels.get(position).getLon());
+        holder.lat.setText(String.valueOf(alarmModels.get(position).getLat()));
+        holder.lon.setText(String.valueOf(alarmModels.get(position).getLon()));
         holder.reason.setText((String) alarmModels.get(position).getReason());
+        holder.itemView.setOnClickListener(v -> {
+            alarmViewListener.onAlarmClick(alarmModels.get(position), position);
+        });
+        holder.imageCancel.setOnClickListener(v -> {
+            alarmViewListener.onCancelClick(alarmModels.get(position), position);
+        });
     }
 
     @Override
@@ -44,11 +56,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         TextView lat;
         TextView lon;
         TextView reason;
+        ImageView imageCancel;
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             lat = (TextView) itemView.findViewById(R.id.ilat);
             lon = (TextView) itemView.findViewById(R.id.ilon);
             reason = (TextView) itemView.findViewById(R.id.ireason);
+            imageCancel = itemView.findViewById(R.id.image_cancel);
         }
     }
 }
