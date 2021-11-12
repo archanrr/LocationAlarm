@@ -1,5 +1,6 @@
 package com.example.locationalarm.Algorithm;
 //To Store the Coordinates as Tree based on Distance Still working on.
+// this algo is based on algorithm.
 public class BinaryTree {
     Coordinate root;
     static int minDistance = 5;
@@ -12,12 +13,18 @@ public class BinaryTree {
         double distance = 0;
         while(head!=null) {
             curr = head;
+            //Checking the difference between current root and new Coordinate.
             distance = MapApi.getDistanceFromLatLonInKm(newCoordinate.lat, newCoordinate.lon,root.lat, root.lon);
+            //Checking the distance are in range ir less than 0.5KM
+            // if so add the new coordinate to nearby list to this point.
+            //to Searching time will drastically reduced
             if(distance <= minDistance) {
                 System.out.println("distance minimum"+distance);
                 root.nearbyList.add(newCoordinate);
                 return;
             }
+            // If new coordinate is not in range defines,
+            // add it as new node in tree with distance between smallest node in tree.
             if(distance > root.distance) {
                 System.out.println("distance left"+distance);
                 head = head.right;
@@ -47,6 +54,7 @@ public class BinaryTree {
 
         printData(root.right);
     }
+    // Find the nearest Coordinate from root.
     Coordinate newCoordinateFindNearestCoordinate(Coordinate root,Coordinate newCoordinate) {
         if(root == null) {
             return null;
@@ -56,7 +64,9 @@ public class BinaryTree {
         double distance = 0;
         while(head!=null) {
             curr = head;
+            //Check the distance b/w current node and current location
             distance = MapApi.getDistanceFromLatLonInKm(newCoordinate.lat, newCoordinate.lon,head.lat, head.lon);
+            //if distance is less the it will be present in ArrayList
             if(distance <= minDistance) {
                 int i=0;
                 Coordinate ret = curr;
@@ -72,13 +82,14 @@ public class BinaryTree {
                 }
                 return ret;
             }
+            // Otherwise it would have been as other node.
             if(distance > root.distance) {
                 head = head.right;
             } else {
                 head = head.left;
             }
         }
-
-        return curr;
+        // Cureent point is not availble in tree
+        return null;
     }
 }
